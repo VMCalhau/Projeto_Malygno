@@ -34,6 +34,7 @@ public class Programa
 					linhas = Integer.parseInt(linha);
 				else if (colunas == 0)
 					colunas = Integer.parseInt(linha);
+
      		}
 
      		labirinto = new char[linhas][colunas];
