@@ -1,3 +1,4 @@
+import Coordenada.*;
 import java.io.*;
 
 public class Programa
@@ -28,6 +29,7 @@ public class Programa
 
 			BufferedReader arquivo = new BufferedReader (new FileReader (arq));
 
+			/*
 			for (String linha = arquivo.readLine(); linha != null; linha = arquivo.readLine())
 			{
 				if (linhas == 0)
@@ -36,8 +38,35 @@ public class Programa
 					colunas = Integer.parseInt(linha);
 
      		}
+			*/
+			linhas = Integer.parseInt(arquivo.readLine());
+			colunas = Integer.parseInt(arquivo.readLine());
 
      		labirinto = new char[linhas][colunas];
+
+     		String linha;
+     		String[] caracteres;
+
+     		for (int i=0; i<linhas; i++)
+     		{
+				linha = arquivo.readLine();
+				caracteres = linha.split("");
+
+				for (int j=0; j<colunas; j++)
+				{
+					labirinto[i][j] = caracteres[j].charAt(0);
+				}
+			}
+
+			/*
+			for (int i=0; i<linhas; i++)
+			{
+				for (int j=0; j<colunas; j++)
+				{
+					System.out.print(labirinto[i][j] + "");
+				}
+				System.out.println("");
+			}*/
 
 		}
 		catch (Exception erro)
