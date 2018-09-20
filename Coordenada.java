@@ -1,6 +1,6 @@
-public class Coordenada
+public class Coordenada implements Cloneable
 {
-	private int x = 0, y = 0;
+	private int x, y = 0;
 
 	public Coordenada(int X, int Y)
 	{
@@ -18,7 +18,30 @@ public class Coordenada
 		return this.y;
 	}
 
-	public boolean equals(Coordenada co)
+
+
+	public void setX(int X) throws Exception
+    {
+
+		if(X < 0)
+		{
+			throw new Exception("Coordenada invalida");
+		}
+
+		this.x = X;
+	}
+
+	public void setY(int Y) throws Exception
+	{
+	     if(Y < 0)
+		{
+			throw new Exception("Coordenada invalida");
+		}
+		this.y = Y;
+	}
+
+
+	public boolean equals(Object co)
 	{
 		if (this == co)
 			return true;
@@ -51,6 +74,28 @@ public class Coordenada
 
 		ret = ret*7 + new Integer(this.x).hashCode();
 		ret = ret*7 + new Integer(this.y).hashCode();
+
+		return ret;
+	}
+
+	public Coordenada (Coordenada modelo) throws Exception
+	{
+		if (modelo == null)
+			throw new Exception("Modelo ausente!");
+
+		this.x = modelo.x;
+		this.y = modelo.y;
+	}
+
+	public Object clone()
+	{
+		Coordenada ret = null;
+		try
+		{
+			ret = new Coordenada (this);
+		}
+		catch (Exception erro)
+		{}
 
 		return ret;
 	}
