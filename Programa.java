@@ -92,7 +92,6 @@ public class Programa
 				}
 
 
-				//7
 				if (!fila.isVazia())
 				{
 					progredindo = true;
@@ -113,12 +112,32 @@ public class Programa
 					progredindo = false;
 					atual = caminho.getUmItem();
 					caminho.jogueForaUmItem();
+					labirinto[atual.getY()][atual.getX()] = ' ';
+
+					fila = possibilidades.getUmItem();
+					possibilidades.jogueForaUmItem();
 				}
+
 
 			}
 
 			if (achouSaida)
+			{
 				System.out.println("Saida encontrada");
+				System.out.println("");
+
+				for (int i = 0; i < linhas; i++)
+				{
+					for (int j = 0; j < colunas; j++)
+					{
+						System.out.print(labirinto[i][j] + "");
+					}
+					System.out.println("");
+				}
+				System.out.println("");
+			}
+
+
 
 		}
 		catch (Exception erro)
