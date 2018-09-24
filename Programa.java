@@ -68,27 +68,19 @@ public class Programa
 				{
 					if (atual.getY() + 1 < linhas)
 						if (labirinto[atual.getY()+1][atual.getX()] == ' ' || labirinto[atual.getY()+1][atual.getX()] == 'S')
-						{
 							fila.guarde (new Coordenada (atual.getY()+1, atual.getX()));
-						}
 
 					if (atual.getY() - 1 >= 0)
 						if (labirinto[atual.getY()-1][atual.getX()] == ' ' || labirinto[atual.getY()-1][atual.getX()] == 'S')
-						{
 							fila.guarde (new Coordenada (atual.getY()-1, atual.getX()));
-						}
 
 					if (atual.getX() + 1 < colunas)
 						if (labirinto[atual.getY()][atual.getX()+1] == ' ' || labirinto[atual.getY()][atual.getX()+1] == 'S')
-						{
 							fila.guarde (new Coordenada (atual.getY(), atual.getX()+1));
-						}
 
 					if (atual.getX() - 1 >= 0)
 						if (labirinto[atual.getY()][atual.getX()-1] == ' ' || labirinto[atual.getY()][atual.getX()-1] == 'S')
-						{
 							fila.guarde (new Coordenada(atual.getY(), atual.getX()-1));
-						}
 				}
 
 
@@ -102,7 +94,8 @@ public class Programa
 					if (labirinto[atual.getY()][atual.getX()] == 'S')
 						achouSaida = true;
 
-					labirinto[atual.getY()][atual.getX()] = '*';
+					if (labirinto[atual.getY()][atual.getX()] != 'S')
+						labirinto[atual.getY()][atual.getX()] = '*';
 
 					possibilidades.guarde(fila);
 					fila = new Fila<Coordenada> (3);
