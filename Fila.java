@@ -38,7 +38,6 @@ public class Fila<X> implements Cloneable
 
 	    public void guarde(X s) throws Exception
 	    {
-			System.out.println (s);
 			if(s==null) // s.equals antes não daria certo, pois se ele for null vai dar errado já que não se pode chamar método para objeto null
 			   throw new Exception("Informação ausente");
 

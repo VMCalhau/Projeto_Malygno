@@ -8,11 +8,12 @@ public class Programa
 		{
 			int linhas = 0, colunas = 0;
 			boolean achouSaida = false;
+			boolean progredindo = true;
 			char labirinto[][];
 			Pilha<Coordenada> caminho;
 			Pilha<Fila<Coordenada>> possibilidades;
 			Coordenada atual = null;
-			Fila<Coordenada> fila;
+			Fila<Coordenada> fila = new Fila<Coordenada> (3);
 
 			BufferedReader teclado = new BufferedReader (new InputStreamReader(System.in));
 
@@ -63,52 +64,61 @@ public class Programa
 
 			while(!achouSaida)
 			{
+				if (progredindo)
+				{
+					if (atual.getY() + 1 < linhas)
+						if (labirinto[atual.getY()+1][atual.getX()] == ' ' || labirinto[atual.getY()+1][atual.getX()] == 'S')
+						{
+							fila.guarde (new Coordenada (atual.getY()+1, atual.getX()));
+						}
 
-				fila = new Fila<Coordenada> (3);
+					if (atual.getY() - 1 >= 0)
+						if (labirinto[atual.getY()-1][atual.getX()] == ' ' || labirinto[atual.getY()-1][atual.getX()] == 'S')
+						{
+							fila.guarde (new Coordenada (atual.getY()-1, atual.getX()));
+						}
 
-				if (atual.getX() < colunas - 1)
-					if (labirinto[atual.getX()+1][atual.getY()] == ' ' || labirinto[atual.getX()+1][atual.getY()] == 'S')
-					{
-						fila.guarde (new Coordenada (atual.getX()+1, atual.getY()));
-						labirinto[atual.getX()+1][atual.getY()] = '*';
-					}
+					if (atual.getX() + 1 < colunas)
+						if (labirinto[atual.getY()][atual.getX()+1] == ' ' || labirinto[atual.getY()][atual.getX()+1] == 'S')
+						{
+							fila.guarde (new Coordenada (atual.getY(), atual.getX()+1));
+						}
 
-				if (atual.getX() > 0)
-					if (labirinto[atual.getX()-1][atual.getY()] == ' ' || labirinto[atual.getX()-1][atual.getY()] == 'S')
-					{
-						fila.guarde (new Coordenada (atual.getX()-1, atual.getY()));
-						labirinto[atual.getX()-1][atual.getY()] = '*';
-					}
-
-				if (atual.getY() < linhas - 1)
-					if (labirinto[atual.getX()][atual.getY()+1] == ' ' || labirinto[atual.getX()][atual.getY()+1] == 'S')
-					{
-						fila.guarde (new Coordenada (atual.getX(), atual.getY()+1));
-						labirinto[atual.getX()][atual.getY()+1] = '*';
-					}
-
-				if (atual.getY() > 0)
-					if (labirinto[atual.getX()][atual.getY()-1] == ' ' || labirinto[atual.getX()][atual.getY()-1] == 'S')
-					{
-						fila.guarde (new Coordenada(atual.getX(), atual.getY()-1));
-						labirinto[atual.getX()][atual.getY()-1] = '*';
-					}
-
-				if (labirinto[atual.getX()][atual.getY()] == 'S')
-					achouSaida = true;
+					if (atual.getX() - 1 >= 0)
+						if (labirinto[atual.getY()][atual.getX()-1] == ' ' || labirinto[atual.getY()][atual.getX()-1] == 'S')
+						{
+							fila.guarde (new Coordenada(atual.getY(), atual.getX()-1));
+						}
+				}
 
 
-				// colo0cra loop
 				//7
-				atual = fila.getUmItem();
-				fila.jogueForaUmItem();
-				//8
+				if (!fila.isVazia())
+				{
+					progredindo = true;
+					atual = fila.getUmItem();
+					fila.jogueForaUmItem();
+					caminho.guarde(atual);
 
-				//9
-				caminho.guarde(new Coordenada(atual.getX(),atual.getY()));
-				//10
-				possibilidades.guarde(fila);
+					if (labirinto[atual.getY()][atual.getX()] == 'S')
+						achouSaida = true;
+
+					labirinto[atual.getY()][atual.getX()] = '*';
+
+					possibilidades.guarde(fila);
+					fila = new Fila<Coordenada> (3);
+				}
+				else
+				{
+					progredindo = false;
+					atual = caminho.getUmItem();
+					caminho.jogueForaUmItem();
+				}
+
 			}
+
+			if (achouSaida)
+				System.out.println("Saida encontrada");
 
 		}
 		catch (Exception erro)
