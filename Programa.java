@@ -1,3 +1,9 @@
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import Pilha.Pilha.*;
+import Fila.Fila.*;
+import Coordenada.Coordenada.*;
 import java.io.*;
 
 public class Programa
@@ -130,8 +136,18 @@ public class Programa
 				System.out.println("");
 			}
 
+			Pilha<Coordenada> inverso = new Pilha<Coordenada>(linhas*colunas);
+			while (!caminho.isVazia())
+			{
+				inverso.guarde(caminho.getUmItem());
+				caminho.jogueForaUmItem();
+			}
 
-
+			while(!inverso.isVazia())
+			{
+				System.out.println(inverso.getUmItem());
+				inverso.jogueForaUmItem();
+			}
 		}
 		catch (Exception erro)
 		{
