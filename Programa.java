@@ -1,9 +1,4 @@
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import Pilha.Pilha.*;
-import Fila.Fila.*;
-import Coordenada.Coordenada.*;
+import Classes.*;
 import java.io.*;
 
 public class Programa
@@ -51,19 +46,7 @@ public class Programa
 					if (caracteres[j].equals("E"))
 						atual = new Coordenada (i,j);
 				}
-
 			}
-
-			/*
-			for (int i = 0; i < linhas; i++)
-			{
-				for (int j = 0; j < colunas; j++)
-				{
-					System.out.print(labirinto[i][j] + "");
-				}
-				System.out.println("");
-			}
-			*/
 
 			caminho = new Pilha<Coordenada> (linhas*colunas);
 			possibilidades = new Pilha<Fila<Coordenada>> (linhas*colunas);

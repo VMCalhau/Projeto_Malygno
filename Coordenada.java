@@ -1,3 +1,4 @@
+package Classes;
 /**
 Esta classe tem a função de armazenar coordenadas.
 */
