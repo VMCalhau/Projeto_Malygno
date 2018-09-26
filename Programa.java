@@ -7,14 +7,16 @@ public class Programa
 	{
 		try
 		{
-			int linhas = 0, colunas = 0;
+			/*int linhas = 0, colunas = 0;
 			boolean achouSaida = false;
 			boolean progredindo = true;
 			char labirinto[][];
 			Pilha<Coordenada> caminho;
 			Pilha<Fila<Coordenada>> possibilidades;
 			Coordenada atual = null;
-			Fila<Coordenada> fila = new Fila<Coordenada> (3);
+			Fila<Coordenada> fila = new Fila<Coordenada> (3);*/
+
+			Labirinto labirinto = new Labirinto();
 
 			BufferedReader teclado = new BufferedReader (new InputStreamReader(System.in));
 
@@ -24,7 +26,7 @@ public class Programa
 			arq = teclado.readLine();
 
 
-			BufferedReader arquivo = new BufferedReader (new FileReader (arq));
+			/*BufferedReader arquivo = new BufferedReader (new FileReader (arq));
 
 
 			linhas = Integer.parseInt(arquivo.readLine());
@@ -46,14 +48,19 @@ public class Programa
 					if (caracteres[j].equals("E"))
 						atual = new Coordenada (i,j);
 				}
-			}
+			}*/
 
-			caminho = new Pilha<Coordenada> (linhas*colunas);
-			possibilidades = new Pilha<Fila<Coordenada>> (linhas*colunas);
+			labirinto.lerArquivo(arq);
 
-			while(!achouSaida)
+			/*caminho = new Pilha<Coordenada> (linhas*colunas);
+			possibilidades = new Pilha<Fila<Coordenada>> (linhas*colunas);*/
+
+
+			labirinto.solucionarLabirinto();
+
+			/*while(!achouSaida)
 			{
-				if (progredindo)
+				if (labirinto.getProgredindo())
 				{
 					if (atual.getY() + 1 < linhas)
 						if (labirinto[atual.getY()+1][atual.getX()] == ' ' || labirinto[atual.getY()+1][atual.getX()] == 'S')
@@ -99,27 +106,25 @@ public class Programa
 					fila = possibilidades.getUmItem();
 					possibilidades.jogueForaUmItem();
 				}
+			}*/
 
-
-			}
-
-			if (achouSaida)
+			if (labirinto.getAchouSaida())
 			{
 				System.out.println("Saida encontrada");
 				System.out.println("");
 
-				for (int i = 0; i < linhas; i++)
+				for (int i = 0; i < labirinto.getLinhas(); i++)
 				{
-					for (int j = 0; j < colunas; j++)
+					for (int j = 0; j < labirinto.getColunas(); j++)
 					{
-						System.out.print(labirinto[i][j] + "");
+						System.out.print(labirinto.getLabirinto(i,j) + "");
 					}
 					System.out.println("");
 				}
 				System.out.println("");
 			}
 
-			Pilha<Coordenada> inverso = new Pilha<Coordenada>(linhas*colunas);
+			/*Pilha<Coordenada> inverso = new Pilha<Coordenada>(linhas*colunas);
 			while (!caminho.isVazia())
 			{
 				inverso.guarde(caminho.getUmItem());
@@ -130,7 +135,9 @@ public class Programa
 			{
 				System.out.println(inverso.getUmItem());
 				inverso.jogueForaUmItem();
-			}
+			}*/
+
+			System.out.println(labirinto.inverso());
 		}
 		catch (Exception erro)
 		{

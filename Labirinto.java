@@ -1,3 +1,7 @@
+//package Classes;
+import Classes.*;
+import java.io.*;
+
 public class Labirinto
 {
 	protected int linhas = 0, colunas = 0;
@@ -6,80 +10,182 @@ public class Labirinto
 	protected Pilha<Coordenada> caminho;
 	protected Pilha<Fila<Coordenada>> possibilidades;
 	protected Coordenada atual = null;
-	protected Fila<Coordenada> fila = new Fila<Coordenada> (3);
+	protected Fila<Coordenada> fila;
 
 
-	public void inverso()
+	public char getLabirinto(int linha, int coluna)
 	{
-		Pilha<Coordenada> inverso = new Pilha<Coordenada>(linhas*colunas);
-		while (!this.caminho.isVazia())
-		{
-			inverso.guarde(caminho.getUmItem());
-			this.caminho.jogueForaUmItem();
-		}
-
-		while(!inverso.isVazia())
-		{
-			System.out.println(inverso.getUmItem());
-			inverso.jogueForaUmItem();
-	    }
+		return this.labirinto[linha][coluna];
 	}
 
-	public void solucionarLabirinto()
+	public boolean getProgredindo()
 	{
-		while(!this.achouSaida)
+		return this.progredindo;
+	}
+
+	public boolean getAchouSaida()
+	{
+		return this.achouSaida;
+	}
+
+	public int getLinhas()
+	{
+		return this.linhas;
+	}
+
+	public int getColunas()
+	{
+		return this.colunas;
+	}
+
+	public Labirinto() throws Exception
+	{
+		try
 		{
-			if (this.progredindo)
-				this.localizar();
+			fila = new Fila<Coordenada> (3);
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	public void lerArquivo(String arq) throws Exception
+	{
+		try
+		{
+			BufferedReader arquivo = new BufferedReader (new FileReader (arq));
 
 
-			if (!this.fila.isVazia())
+			linhas = Integer.parseInt(arquivo.readLine());
+			colunas = Integer.parseInt(arquivo.readLine());
+
+			labirinto = new char[linhas][colunas];
+
+			String linha;
+			String[] caracteres;
+
+			for (int i=0; i<linhas; i++)
 			{
-				this.progredindo = true;
-				this.atual = this.fila.getUmItem();
-				this.fila.jogueForaUmItem();
-				this.caminho.guarde(this.atual);
+				linha = arquivo.readLine();
+				caracteres = linha.split("");
 
-				if (this.labirinto[this.atual.getY()][this.atual.getX()] == 'S')
-					this.achouSaida = true;
-
-				if (this.labirinto[this.atual.getY()][this.atual.getX()] != 'S')
-					this.labirinto[this.atual.getY()][this.atual.getX()] = '*';
-
-				this.possibilidades.guarde(this.fila);
-				this.fila = new Fila<Coordenada> (3);
+				for (int j=0; j<colunas; j++)
+				{
+					labirinto[i][j] = caracteres[j].charAt(0);
+					if (caracteres[j].equals("E"))
+						atual = new Coordenada (i,j);
+				}
 			}
-			else
+
+			caminho = new Pilha<Coordenada> (linhas*colunas);
+			possibilidades = new Pilha<Fila<Coordenada>> (linhas*colunas);
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	public String inverso() throws Exception
+	{
+		String ret = "";
+
+		try
+		{
+			Pilha<Coordenada> inverso = new Pilha<Coordenada>(linhas*colunas);
+			while (!this.caminho.isVazia())
 			{
-				this.progredindo = false;
-				this.atual = this.caminho.getUmItem();
+				inverso.guarde(caminho.getUmItem());
 				this.caminho.jogueForaUmItem();
-				this.labirinto[this.atual.getY()][this.atual.getX()] = ' ';
-
-				this.fila = this.possibilidades.getUmItem();
-				this.possibilidades.jogueForaUmItem();
 			}
 
+			while(!inverso.isVazia())
+			{
+				ret += inverso.getUmItem() + " ";
+				inverso.jogueForaUmItem();
+			}
+
+			return ret;
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
+		}
+
+		//return ret;
+	}
+
+	public void solucionarLabirinto() throws Exception
+	{
+		try
+		{
+			while(!this.achouSaida)
+			{
+				if (this.progredindo)
+					this.localizar();
+
+
+				if (!this.fila.isVazia())
+				{
+					this.progredindo = true;
+					this.atual = this.fila.getUmItem();
+					this.fila.jogueForaUmItem();
+					this.caminho.guarde(this.atual);
+
+					if (this.labirinto[this.atual.getY()][this.atual.getX()] == 'S')
+						this.achouSaida = true;
+
+					if (this.labirinto[this.atual.getY()][this.atual.getX()] != 'S')
+						this.labirinto[this.atual.getY()][this.atual.getX()] = '*';
+
+					this.possibilidades.guarde(this.fila);
+					this.fila = new Fila<Coordenada> (3);
+				}
+				else
+				{
+					this.progredindo = false;
+					this.atual = this.caminho.getUmItem();
+					this.caminho.jogueForaUmItem();
+					this.labirinto[this.atual.getY()][this.atual.getX()] = ' ';
+
+					this.fila = this.possibilidades.getUmItem();
+					this.possibilidades.jogueForaUmItem();
+				}
+
+			}
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	private void localizar()
+	private void localizar() throws Exception
 	{
-		if (this.atual.getY() + 1 < this.linhas)
-			if (this.labirinto[this.atual.getY()+1][this.atual.getX()] == ' ' || this.labirinto[this.atual.getY()+1][this.atual.getX()] == 'S')
-				this.fila.guarde (new Coordenada (this.atual.getY()+1, this.atual.getX()));
+		try
+		{
+			if (this.atual.getY() + 1 < this.linhas)
+				if (this.labirinto[this.atual.getY()+1][this.atual.getX()] == ' ' || this.labirinto[this.atual.getY()+1][this.atual.getX()] == 'S')
+					this.fila.guarde (new Coordenada (this.atual.getY()+1, this.atual.getX()));
 
-		if (this.atual.getY() - 1 >= 0)
-			if (this.labirinto[this.atual.getY()-1][this.atual.getX()] == ' ' || this.labirinto[this.atual.getY()-1][this.atual.getX()] == 'S')
-				this.fila.guarde (new Coordenada (this.atual.getY()-1, this.atual.getX()));
+			if (this.atual.getY() - 1 >= 0)
+				if (this.labirinto[this.atual.getY()-1][this.atual.getX()] == ' ' || this.labirinto[this.atual.getY()-1][this.atual.getX()] == 'S')
+					this.fila.guarde (new Coordenada (this.atual.getY()-1, this.atual.getX()));
 
-		if (this.atual.getX() + 1 < this.colunas)
-			if (this.labirinto[this.atual.getY()][this.atual.getX()+1] == ' ' || this.labirinto[this.atual.getY()][this.atual.getX()+1] == 'S')
-				this.fila.guarde (new Coordenada (this.atual.getY(), this.atual.getX()+1));
+			if (this.atual.getX() + 1 < this.colunas)
+				if (this.labirinto[this.atual.getY()][this.atual.getX()+1] == ' ' || this.labirinto[this.atual.getY()][this.atual.getX()+1] == 'S')
+					this.fila.guarde (new Coordenada (this.atual.getY(), this.atual.getX()+1));
 
-		if (this.atual.getX() - 1 >= 0)
-			if (this.labirinto[this.atual.getY()][this.atual.getX()-1] == ' ' || this.labirinto[this.atual.getY()][this.atual.getX()-1] == 'S')
-				this.fila.guarde (new Coordenada(this.atual.getY(), this.atual.getX()-1));
+			if (this.atual.getX() - 1 >= 0)
+				if (this.labirinto[this.atual.getY()][this.atual.getX()-1] == ' ' || this.labirinto[this.atual.getY()][this.atual.getX()-1] == 'S')
+				    this.fila.guarde (new Coordenada(this.atual.getY(), this.atual.getX()-1));
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
+		}
+
 	}
 
 
@@ -89,7 +195,9 @@ public class Labirinto
 
 		ret = ret*7 + new Integer(this.linhas).hashCode();
 		ret = ret*7 + new Integer(this.colunas).hashCode();
-		ret = ret*7 + new Integer(this.labirinto).hashCode();
+		for (int i = 0; i < linhas; i++)
+			for (int j = 0; j < colunas; j++)
+				ret = ret*7 + new Integer(this.labirinto[i][j]).hashCode();
 
 		return ret;
 	}
@@ -109,7 +217,7 @@ public class Labirinto
 		Labirinto ret = null;
 		try
 		{
-			ret = new Coordenada (this);
+			ret = new Labirinto (this);
 		}
 		catch (Exception erro)
 		{}
@@ -119,14 +227,19 @@ public class Labirinto
 
 	public String toString()
 	{
+		String ret = "";
+
 		for (int i = 0; i < linhas; i++)
 		{
 			for (int j = 0; j < colunas; j++)
 			{
-				System.out.print(labirinto[i][j] + "");
+				ret += labirinto[i][j] + "";
 			}
-			System.out.println("");
+
+			ret += "\n";
 		}
+
+		return ret;
 	}
 
 		public boolean equals(Object la)
