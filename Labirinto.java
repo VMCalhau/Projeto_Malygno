@@ -1,7 +1,9 @@
-//package Classes;
 import Classes.*;
 import java.io.*;
-
+/**
+Esta classe tem a função de guardar os métodos
+relativos ao funcionamento do programa
+*/
 public class Labirinto
 {
 	protected int linhas = 0, colunas = 0;
@@ -12,32 +14,51 @@ public class Labirinto
 	protected Coordenada atual = null;
 	protected Fila<Coordenada> fila;
 
-
+	/**
+	Retorna a matriz labirinto
+	@param linha quantidade de linhas do labirinto
+	@param coluna quantidade de coluna do labirinto
+	*/
 	public char getLabirinto(int linha, int coluna)
 	{
 		return this.labirinto[linha][coluna];
 	}
 
+	/**
+	Retorna a variável boolean progredindo
+	*/
 	public boolean getProgredindo()
 	{
 		return this.progredindo;
 	}
 
+    /**
+	Retorna a variável boolean achouSaida
+	*/
 	public boolean getAchouSaida()
 	{
 		return this.achouSaida;
 	}
 
+    /**
+	Retorna o valor do atributo linhas
+	*/
 	public int getLinhas()
 	{
 		return this.linhas;
 	}
 
+	/**
+	Retorna o valor do atributo colunas
+	*/
 	public int getColunas()
 	{
 		return this.colunas;
 	}
 
+	/**
+	Construtor da classe
+	*/
 	public Labirinto() throws Exception
 	{
 		try
@@ -50,6 +71,9 @@ public class Labirinto
 		}
 	}
 
+	/**
+	Lê o arquivo e armazena o labirinto na matriz
+	*/
 	public void lerArquivo(String arq) throws Exception
 	{
 		try
@@ -87,6 +111,9 @@ public class Labirinto
 		}
 	}
 
+	/**
+	Inverte o caminho para que fique na ordem entrada-saida
+	*/
 	public String inverso() throws Exception
 	{
 		String ret = "";
@@ -116,6 +143,9 @@ public class Labirinto
 		//return ret;
 	}
 
+	/**
+	Encontra o caminho até a saída do labirinto
+	*/
 	public void solucionarLabirinto() throws Exception
 	{
 		try
@@ -161,6 +191,10 @@ public class Labirinto
 		}
 	}
 
+	/**
+	Verifica as possiveis coordenadas
+	que constituiram o caminho
+	*/
 	private void localizar() throws Exception
 	{
 		try
@@ -188,7 +222,9 @@ public class Labirinto
 
 	}
 
-
+	/**
+	Retorna o valor do hash code do objeto
+	*/
 	public int hashCode()
 	{
 		int ret = 4;
@@ -202,6 +238,10 @@ public class Labirinto
 		return ret;
 	}
 
+	/**
+	Faz uma cópia de todos os atributos da classe passada como parâmetro
+	@param modelo classe a ter seus atributos copiados
+	*/
 	public Labirinto (Labirinto modelo) throws Exception
 	{
 		if (modelo == null)
@@ -211,7 +251,9 @@ public class Labirinto
 		this.colunas = modelo.colunas;
 		this.labirinto = modelo.labirinto;
 	}
-
+	/**
+	Cria e retorna uma cópia do objeto
+	*/
 	public Object clone()
 	{
 		Labirinto ret = null;
@@ -225,6 +267,9 @@ public class Labirinto
 		return ret;
 	}
 
+	/**
+	Retorna uma String que representa o objeto
+	*/
 	public String toString()
 	{
 		String ret = "";
@@ -242,28 +287,32 @@ public class Labirinto
 		return ret;
 	}
 
-		public boolean equals(Object la)
-		{
-			if (this == la)
-				return true;
-
-			if (la == null)
-				return false;
-
-			if (this.getClass() != la.getClass())
-				return false;
-
-			Labirinto l = (Labirinto) la;
-
-			if (this.linhas != l.linhas)
-				return false;
-
-			if (this.colunas != l.colunas)
-				return false;
-
-			if (this.labirinto != l.labirinto)
-				return false;
-
+	/**
+	Compara dois objetos
+	@param co objeto a ser comparado com o objeto que chamou o método
+	*/
+	public boolean equals(Object la)
+	{
+		if (this == la)
 			return true;
+
+		if (la == null)
+			return false;
+
+		if (this.getClass() != la.getClass())
+			return false;
+
+		Labirinto l = (Labirinto) la;
+
+		if (this.linhas != l.linhas)
+			return false;
+
+		if (this.colunas != l.colunas)
+			return false;
+
+		if (this.labirinto != l.labirinto)
+			return false;
+
+		return true;
 	}
 }
